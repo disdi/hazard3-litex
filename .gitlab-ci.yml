@@ -3,7 +3,7 @@ image:
 
 pages:
   script:
-    - mkdocs build --config-file ./mkdocs-sample.yml
+    - mkdocs build --config-file ./mkdocs.yml
     - mv site public
   artifacts:
     paths:

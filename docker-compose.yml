@@ -13,4 +13,4 @@ services:
       - "serve"
       - "--dev-addr=0.0.0.0:8000"
       - "--config-file"
-      - "./mkdocs-sample.yml"
+      - "./mkdocs.yml"
