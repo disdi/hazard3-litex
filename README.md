@@ -20,7 +20,7 @@ Comparing to ARM and x86, a RISC-V CPU has the following advantages:
 
 ## Hazard3
 
-Hazard3 is a configurable 3-stage RISC-V processor with :
+Hazard3, currently used in RP2350 SOC from Raspberry Pi Pico2, is a configurable 3-stage RISC-V processor with :
 
 - RV32I: 32-bit base instruction set
 - Extensions :
@@ -39,7 +39,7 @@ Hazard3 uses AHB5 from the AMBA protocol specification for high-speed, high-band
 
 ## Litex
 
-![litex](images/litex-diagram.svg)
+![litex](images/litex-soc.png)
 
 The use of a combination of hardware construction languages SpinalHDL and Verilog HDL to implement a 32-bit Linux-capable RISC-V processor. LiteX and SpinalHDL are two intertwined frameworks in the design flow. The CPU core was created with SpinalHDL, while the integration of IP and CPU cores was performed with LiteX. Verilog source code was generated with the configured 32-bit RISC-V architecture after the design was completed on the high-level framework. This 32- bit RISC-V architecture was successfully built on a Nexys4DDR FPGA.
 
@@ -66,9 +66,9 @@ Over UART, the Linux Image with all the tests would be sent and loaded into the 
 
 ## Details
 
-Read more 👉 [Documentation - MkDocs Material Boilerplate]
+Read more about Hazard3 👉 [Documentation - Hazard3]
 
-[Documentation - MkDocs Material Boilerplate]: https://peaceiris.github.io/mkdocs-material-boilerplate/
+[Documentation - Hazard3]: https://github.com/Wren6991/Hazard3
 
 
 
@@ -85,4 +85,4 @@ inv serve
 
 - [MIT License]
 
-[MIT License]: (../LICENSE)
+[MIT License]: (docs_sample/license.md)
