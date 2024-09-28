@@ -5,8 +5,8 @@
     "lang": "en-US",
     "icons": [
         {
-            "src": "images/litex-diagram.svg",
-            "type": "image/svg",
+            "src": "images/litex-soc.png",
+            "type": "image/png",
             "sizes": "192x192"
         }
     ],
