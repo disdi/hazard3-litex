@@ -3,10 +3,9 @@
 <br>Hazard3 support in Litex<br>
 </h1>
 
-![RP2350 SOC with Hazard3 Cores](https://www.raspberrypi.com/app/uploads/2024/08/RP2350-colour-Medium.jpeg)
+# Below components are involved in the project
 
-
-## RISC-V
+## RISC-V ISA
 
 RISC-V is an open standard instruction set architecture based on established RISC (Reduced Instruction Set Computer) principles.
 
@@ -18,7 +17,9 @@ Comparing to ARM and x86, a RISC-V CPU has the following advantages:
 - Stable : Base and first standard extensions are already frozen. There is no need to worry about major updates. 
 - Extensibility : Specific functions can be added based on extensions. There are many more extensions are under development. 
 
-## Hazard3
+## Hazard3 Processor
+
+![RP2350 SOC with Hazard3 Cores](https://www.raspberrypi.com/app/uploads/2024/08/RP2350-colour-Medium.jpeg)
 
 Hazard3, currently used in RP2350 SOC from Raspberry Pi Pico2, is a configurable 3-stage RISC-V processor with :
 
@@ -34,37 +35,57 @@ Hazard3, currently used in RP2350 SOC from Raspberry Pi Pico2, is a configurable
     - some Bit-Manipulation instructions 
     - some custom instructions
 
-Hazard3 uses AHB5 from the AMBA protocol specification for high-speed, high-bandwidth communication between processor, memories, DMA controllers, and other high-speed peripherals.
+Hazard3 uses Advanced High-performance Bus (AHB) from the Advanced Microcontroller Bus Architecture (AMBA) protocol specification for high-speed, high-bandwidth communication between processor, memories, DMA controllers, and other high-speed peripherals.
 
 
-## Litex
+## Litex SOC Framework
 
-![litex](images/litex-soc.png)
+The use of a combination of hardware construction languages SpinalHDL and Verilog HDL to implement a 32-bit Linux-capable RISC-V processor. LiteX and SpinalHDL are two intertwined frameworks in the design flow. The CPU cores can be created with SpinalHDL/Verilog, while the integration of peripheral IPs and CPU cores is performed with LiteX. 
 
-The use of a combination of hardware construction languages SpinalHDL and Verilog HDL to implement a 32-bit Linux-capable RISC-V processor. LiteX and SpinalHDL are two intertwined frameworks in the design flow. The CPU core was created with SpinalHDL, while the integration of IP and CPU cores was performed with LiteX. Verilog source code was generated with the configured 32-bit RISC-V architecture after the design was completed on the high-level framework. This 32- bit RISC-V architecture was successfully built on a Nexys4DDR FPGA.
-
-Using the LiteX framework, the Hazard3 core will be created with all FPGA primitives and a project file. The LiteX framework allows to create FPGA cores/System-on-Chips, experiment with different digital design architectures, and build complete FPGA-based systems. Using LiteX in conjunction with the ecosystem of cores, which includes VexRiscV, CVA5 etc makes building complicated SoCs easier than with previous methods, while also improving portability and flexibility
-
-The Hazard3 SoC will be generated with the following configuration after calling the SpinalHDL creation process and the LiteX build process: 
-
-- Single core Hazard3 cores (RV32IMAC) with Supervisor mode.
-	- 8k, 2-way L1 I and D 
-	- Memory Management Unit 
-	- 32-bit Wishbone Bus, 4.0GB Address Space 
-- L2 cache:
-	- 8KB, 128-bit bus width L2 
-	- UART, SD-card peripherals
-	- Custom accelerator built into CPU core
-
-Timing constraints and IO assignment was generated alongside the Verilog RTL as a XDC file. The design was synthesized and implemented using Vivado 2016.4. The design’s resource utilization was shown in Table 3 for each configuration.
-
-All DRC violations were either resolved or waived, and the STA (Static Timing Analysis) report was cleaned. The FPGA board is fed by a 100MHz crystal, whereas the Hazard3 core complex is driven by a Xilinx Mixed-Mode Clock Manager (MMCM) at 75MHz.
-
-Over UART, the Linux Image with all the tests would be sent and loaded into the system main memory. That procedure is handled by the first stage bootloader. The Linux image was created with Buildroot.
+The LiteX framework allows to create FPGA cores/System-on-Chips, experiment with different digital design architectures, and build complete FPGA-based systems. Using LiteX in conjunction with the ecosystem of cores, which includes VexRiscV, CVA5 etc makes building complicated SoCs easier than with previous methods, while also improving portability and flexibility
 
 
+# Implementation Details of the project
 
-## Details
+The objective of the project is to integrate Hazard3 Processor as a Softcore in Litex Framework with Linux support. 
+Following steps are involved :
+
+1. Verilog source code of Hazard3 will be integrated with the configured 32-bit RISC-V SOC architecture using Litex SOC framework. This 32- bit RISC-V SOC will be synthesized on a Nexys4DDR Xilinx FPGA.
+
+
+2. The Hazard3 SoC will be generated with the following configuration after calling the Verilog code and the LiteX build process: 
+
+    - Single core Hazard3 cores (RV32IMAC) with Supervisor mode.
+	    - 8k, 2-way L1 IandD 
+	    - Memory Management Unit 
+	    - 32-bit Wishbone Bus, 4.0GB Address Space 
+    - L2 cache:
+	    - 8KB, 128-bit bus width L2 
+	    - UART, SD-card peripherals
+	    - Custom accelerator built into CPU core
+
+3. Timing constraints and IO assignment will be generated alongside the Verilog RTL as a XDC file. The design will be synthesized and implemented using Vivado/Yosys. 
+
+4. All DRC violations will be either resolved or waived, and the STA (Static Timing Analysis) report will be cleaned. The FPGA board would be fed by a 100MHz crystal, whereas the Hazard3 core complex would be driven by a Xilinx Mixed-Mode Clock Manager (MMCM) at 75MHz.
+
+5. Over UART, the Linux Image with all the tests would be sent and loaded into the system main memory. That procedure is handled by the first stage bootloader using Litex BIOS. The Linux image will be created with Buildroot.
+
+
+## Budget Details for the Project
+
+
+| Project Component | Details                                            | Budget |
+|-------------------|----------------------------------------------------|--------|
+| Hardware          | FPGA boards, Prototyping Materials, Test Equipment | 20000  |
+| Gateware          | HDL code development for integrating Hazard3       | 10000  |
+| Firmware          | Litex Bios/Bootloader code development             | 10000  |
+| Software          | Linux code development for Hazard3                 | 10000  |
+
+
+Total Cost of Project = Hardware Cost + Gateware Cost + Firmware Cost + Software Cost = 20000 + 10000 + 10000 + 10000 = 50000 €
+
+
+## External Resources
 
 Read more about Hazard3 👉 [Documentation - Hazard3]
 
@@ -72,7 +93,7 @@ Read more about Hazard3 👉 [Documentation - Hazard3]
 
 
 
-## Quick start
+## Build Documentation
 
 ```sh
 python3 -m pipenv shell
